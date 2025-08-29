@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: cloud-ide-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: OPENAI_API_KEY
+        sync: false
+    healthCheckPath: /api/health
+    
+  - type: web
+    name: cloud-ide-frontend
+    env: static
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://cloud-ide-backend.onrender.com
