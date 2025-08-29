@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ChatInterface from './components/ChatInterface';
 import LivePreview from './components/LivePreview';
+import { buildApiUrl, config } from './config';
 import './App.css';
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
 
   const fetchAvailableProviders = async () => {
     try {
-      const response = await fetch('/api/config');
+      const response = await fetch(buildApiUrl(config.api.endpoints.config));
       const data = await response.json();
       setAvailableProviders(data.availableProviders);
       if (data.defaultProvider) {
@@ -46,7 +47,7 @@ function App() {
     setChatHistory(prev => [...prev, userMessage]);
 
     try {
-      const response = await fetch('/api/generate-website', {
+      const response = await fetch(buildApiUrl(config.api.endpoints.generateWebsite), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
